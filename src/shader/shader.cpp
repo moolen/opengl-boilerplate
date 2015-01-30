@@ -12,7 +12,7 @@ m_path("resources/shaders/"),
 m_shaderType(type),
 m_filename(filename)
 {
-	std::cout << "shader constructor" << std::endl;
+	//std::cout << "shader constructor" << std::endl;
 	ReadShaderfile();
 	CompileShader();
 }
@@ -46,35 +46,6 @@ GLuint Shader::CompileShader()
 	return m_shaderId;
 }
 
-GLint Shader::AddUniform(const char* uniform){
-	GLint location = glGetUniformLocation(m_shaderId, (const GLchar *) uniform);
-
-	printf("uniform location: %d for %s", location, uniform);
-
-	if( location == GL_INVALID_VALUE ){
-		printf("invalid uniform location for %s", uniform);
-		return GL_INVALID_VALUE;
-	}else{
-		m_uniforms.insert(std::pair<const char*,int>(uniform, location));
-		return location;
-	}
-}
-
-GLint Shader::GetUniformLocation(const char* uniform){
-	return m_uniforms.find(uniform)->second;
-}
-
-void Shader::Uniform1i(const char* uniform, int value){
-	GLint location = GetUniformLocation(uniform);
-	glUniform1i(location, value);
-}
-
-void Shader::Uniform1f(const char* uniform, float value){
-	GLint location = GetUniformLocation(uniform);
-	//printf("location: %i", location);
-	glUniform1f(location, value);
-}
-
 void Shader::CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage)
 {
 	GLint success = GL_FALSE;
@@ -98,7 +69,7 @@ void Shader::CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const 
 
 Shader::~Shader(){
 	glDeleteShader(m_shaderId);
-	std::cout << "shader destructor" << std::endl;
+	//std::cout << "shader destructor" << std::endl;
 }
 
 #endif

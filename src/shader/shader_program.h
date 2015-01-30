@@ -9,14 +9,19 @@
 class ShaderProgram{
 public:
 	ShaderProgram();
+
 	void Attach(GLuint shaderId);
 	void Link();
 	void Use();
+
+	GLint AddUniform(const char* uniform);
+	GLint GetUniformLocation(const char* uniform);
+
 	static void CheckInfoLog(GLuint program);
 	virtual ~ShaderProgram();
 protected:
 	GLuint m_program;
-	//std::vector<GLuint> m_shaderIds;
+	std::map<const char*, GLint> m_uniforms;
 };
 
 #endif

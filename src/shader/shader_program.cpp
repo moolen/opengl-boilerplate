@@ -11,7 +11,7 @@ ShaderProgram::ShaderProgram():
 	if(m_program == 0)
 		std::cout << "error creating shader program" << std::endl;
 	
-	std::cout << "shaderprogram constructor: " << m_program << std::endl;
+	//std::cout << "shaderprogram constructor: " << m_program << std::endl;
 
 }
 
@@ -32,6 +32,24 @@ void ShaderProgram::Use(){
 	glUseProgram(m_program);
 }
 
+GLint ShaderProgram::AddUniform(const char* uniform){
+	GLint location = glGetUniformLocation(m_program, (const GLchar *) uniform);
+
+	printf("uniform location: %d for %s\n", location, uniform);
+
+	if( location == GL_INVALID_VALUE || location == -1){
+		printf("invalid uniform location for %s\n", uniform);
+		return GL_INVALID_VALUE;
+	}else{
+		m_uniforms.insert(std::pair<const char*,int>(uniform, location));
+		return location;
+	}
+}
+
+GLint ShaderProgram::GetUniformLocation(const char* uniform){
+	return m_uniforms.find(uniform)->second;
+}
+
 void ShaderProgram::CheckInfoLog(GLuint program){
     int InfoLogLength;
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength);
@@ -43,7 +61,7 @@ void ShaderProgram::CheckInfoLog(GLuint program){
 }
 
 ShaderProgram::~ShaderProgram(){
-	std::cout << "shaderprogram destructor" << std::endl;
+	//std::cout << "shaderprogram destructor" << std::endl;
 	glDeleteProgram(m_program);
 }
 

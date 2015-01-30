@@ -1,7 +1,12 @@
 #version 300 es
- 
+
+in highp float pass_Time;
 out highp vec3 color;
- 
+
 void main(){
-    color = vec3(1,0,0);
+    color = vec3(
+    	sin(cos(pass_Time) + pass_Time),
+    	cos(pass_Time),
+    	sin(pass_Time)
+    );
 }

@@ -44,11 +44,10 @@ void Display::setupOpenGL(){
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_LIGHTING);
-
+	glEnable(GL_LINE_SMOOTH);
+	glfwWindowHint(GLFW_SAMPLES, 16);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
 	glCullFace(GL_BACK);
-
 	glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
 }
 

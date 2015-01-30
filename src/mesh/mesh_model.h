@@ -13,14 +13,24 @@ public:
 	const static int VERTEX_ARRAY_POSITION = 0;
 	const static int VERTEX_ARRAY_NORMAL = 1;
 	const static int VERTEX_ARRAY_TEXTURE = 2;
-	const static int VERTEX_ARRAY_INDEX = 1;
 	
 	// constructor: nothing
 	MeshModel();
 
+	// constructor: pos only
+	MeshModel(std::vector<GLfloat> positions);
+
+	// position & indices
 	MeshModel(
 		std::vector<GLfloat> positions,
 		std::vector<GLuint> indices
+	);
+
+	// constructor: pos, index, normal
+	MeshModel(
+		std::vector<GLfloat> positions,
+		std::vector<GLuint> indices,
+		std::vector<GLfloat> normals
 	);
 
 	// constructor: pos, index, normal, tex
@@ -30,9 +40,6 @@ public:
 		std::vector<GLfloat> normals,
 		std::vector<GLfloat> texCoords
 	);
-
-	// constructor: pos only
-	MeshModel(std::vector<GLfloat> positions);
 
 	// setter for pos, norm, indices, tex
 	void AddPositions(std::vector<GLfloat> positions);

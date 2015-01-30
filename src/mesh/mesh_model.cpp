@@ -11,28 +11,14 @@
 //
 //
 
-MeshModel::MeshModel(){
+// empty constructor
+// @use AddPositions / AddNormals / AddIndices
+MeshModel::MeshModel(){}
 
-}
-
-MeshModel::MeshModel(
-	std::vector<GLfloat> positions,
-	std::vector<unsigned int> indices,
-	std::vector<GLfloat> normals,
-	std::vector<GLfloat> texCoords
-)
-{
-	SetVertexCount(positions.size() / 3);
-	CreateVAO();
-	BindVAO();
-	StoreInAttributeList(GL_ARRAY_BUFFER, VERTEX_ARRAY_POSITION, positions, 3);
-	StoreIndexBuffer(indices);
-	//StoreInAttributeList(GL_ARRAY_BUFFER, 1, normals, 3);
-	//StoreInAttributeList(GL_ARRAY_BUFFER, 2, texCoords, 2);
-	UnbindVAO();
-
-}
-
+/**
+ * constructor:
+ * - positions only
+ */
 MeshModel::MeshModel(
 	std::vector<GLfloat> positions)
 {
@@ -51,6 +37,11 @@ MeshModel::MeshModel(
 
 }
 
+/**
+ * constructor:
+ * - positions
+ * - indices
+ */
 MeshModel::MeshModel(
 	std::vector<GLfloat> positions,
 	std::vector<GLuint> indices
@@ -73,6 +64,90 @@ MeshModel::MeshModel(
 	UnbindVAO();
 
 }
+
+/**
+ * constructor:
+ * - positions
+ * - indices
+ * - normals
+ */
+MeshModel::MeshModel(
+	std::vector<GLfloat> positions,
+	std::vector<GLuint> indices,
+	std::vector<GLfloat> normals
+)
+{
+	SetVertexCount(indices.size());
+	CreateVAO();
+	BindVAO();
+	
+	StoreIndexBuffer(indices);
+
+	StoreInAttributeList(
+		GL_ARRAY_BUFFER,
+		VERTEX_ARRAY_POSITION,
+		positions,
+		3
+	);
+
+	StoreInAttributeList(
+		GL_ARRAY_BUFFER,
+		VERTEX_ARRAY_NORMAL,
+		normals,
+		3
+	);
+
+	
+	UnbindVAO();
+
+}
+
+/**
+ * Constructr:
+ * - positions
+ * - indices
+ * - normals
+ * - texCoords
+ */
+MeshModel::MeshModel(
+	std::vector<GLfloat> positions,
+	std::vector<unsigned int> indices,
+	std::vector<GLfloat> normals,
+	std::vector<GLfloat> texCoords
+)
+{
+	SetVertexCount(indices.size());
+	CreateVAO();
+	BindVAO();
+	
+	StoreIndexBuffer(indices);
+
+	StoreInAttributeList(
+		GL_ARRAY_BUFFER,
+		VERTEX_ARRAY_POSITION,
+		positions,
+		3
+	);
+
+	StoreInAttributeList(
+		GL_ARRAY_BUFFER,
+		VERTEX_ARRAY_NORMAL,
+		normals,
+		3
+	);
+
+	StoreInAttributeList(
+		GL_ARRAY_BUFFER,
+		VERTEX_ARRAY_TEXTURE,
+		texCoords,
+		2
+	);
+
+	
+	UnbindVAO();
+
+}
+
 
 void MeshModel::AddPositions(std::vector<GLfloat> positions){
 	

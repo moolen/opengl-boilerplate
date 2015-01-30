@@ -7,7 +7,7 @@
 Inputhandler::Inputhandler(Display* display):
 	m_display(display)
 {
-	std::cout << "Inputhandler constructor" << std::endl;
+	//std::cout << "Inputhandler constructor" << std::endl;
 }
 
 void Inputhandler::HandleKey(int key, int scancode, int action, int mods){
@@ -18,7 +18,7 @@ void Inputhandler::HandleKey(int key, int scancode, int action, int mods){
 }
 
 Inputhandler::~Inputhandler(){
-	std::cout << "Inputhandler destructor" << std::endl;
+	//std::cout << "Inputhandler destructor" << std::endl;
 }
 
 #endif
