@@ -49,7 +49,7 @@ GLuint Shader::CompileShader()
 GLint Shader::AddUniform(const char* uniform){
 	GLint location = glGetUniformLocation(m_shaderId, (const GLchar *) uniform);
 
-	std::cout << "uniform location: " << location << " uniform: " << uniform << std::endl;
+	printf("uniform location: %d for %s", location, uniform);
 
 	if( location == GL_INVALID_VALUE ){
 		printf("invalid uniform location for %s", uniform);
@@ -71,7 +71,7 @@ void Shader::Uniform1i(const char* uniform, int value){
 
 void Shader::Uniform1f(const char* uniform, float value){
 	GLint location = GetUniformLocation(uniform);
-	printf("location: %i", location);
+	//printf("location: %i", location);
 	glUniform1f(location, value);
 }
 

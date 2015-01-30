@@ -9,8 +9,6 @@ File::File(const char* filename):
 m_filename(filename),
 m_content("")
 {
-	std::cout << "File constructor" << std::endl;
-
 	std::string line;
 
 	std::ifstream myfile(m_filename);
@@ -30,8 +28,6 @@ std::string File::Get(){
 	return m_content;
 }
 
-File::~File(){
-	std::cout << "File destructor" << std::endl;
-}
+File::~File(){}
 
 #endif

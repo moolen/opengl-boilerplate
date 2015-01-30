@@ -10,6 +10,7 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
 
 #include "display/display.h"
 #include "game/game.h"
@@ -17,6 +18,7 @@
 #include "mesh/wavefront.h"
 #include "shader/shader.h"
 #include "shader/shader_program.h"
+#include "mesh/mesh_model.h"
 
 static const int DISPLAY_WIDTH = 800;
 static const int DISPLAY_HEIGHT = 600;
@@ -31,7 +33,7 @@ static void keyCallback(GLFWwindow* window, int key, int scancode, int action, i
 int main () {
 
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_NAME);
-	//Wavefront mesh("cube.obj");
+	Wavefront mesh("monkey.obj");
 	Inputhandler inputhandler(&display);
 	
 	Shader fragmentShader("shader.fragment", GL_FRAGMENT_SHADER);
@@ -44,38 +46,38 @@ int main () {
 	program.Attach(vertexShader.GetId());
 	program.Link();
 
-	vertexShader.AddUniform("ftime");
-
-
 	// testing
-	// Dark blue background
-        GLuint VertexArrayID;
-        glGenVertexArrays(1, &VertexArrayID);
-        glBindVertexArray(VertexArrayID);
+	/*
+        std::vector<float> vertexData;
+        std::vector<GLuint> indexData;
 
-        static const GLfloat g_vertex_buffer_data[] = { 
-                -1.0f, -1.0f, 0.0f,
-                 1.0f, -1.0f, 0.0f,
-                 0.0f,  1.0f, 0.0f,
-        };
+	    vertexData.push_back(-0.5f);
+	    vertexData.push_back(0.5f);
+	    vertexData.push_back(0.0f);
 
-        GLuint vertexbuffer;
-        glGenBuffers(1, &vertexbuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-        
-        glVertexAttribPointer(
-                0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-                3,                  // size
-                GL_FLOAT,           // type
-                GL_FALSE,           // normalized?
-                0,                  // stride
-                (void*)0            // array buffer offset
-        );
+	    vertexData.push_back(-0.5f);
+	    vertexData.push_back(-0.5f);
+	    vertexData.push_back(0.0f);
 
-        glEnableVertexAttribArray(0);
-        glBindVertexArray(0);
-        glDeleteBuffers(1, &vertexbuffer);
+	    vertexData.push_back(0.5f);
+	    vertexData.push_back(-0.5f);
+	    vertexData.push_back(0.0f);
+
+	    vertexData.push_back(0.5f);
+	    vertexData.push_back(0.5f);
+	    vertexData.push_back(0.0f);
+
+	    indexData.push_back(0);
+	    indexData.push_back(1);
+	    indexData.push_back(3);
+	    indexData.push_back(3);
+	    indexData.push_back(1);
+	    indexData.push_back(2);
+
+
+
+        MeshModel mesh(vertexData, indexData);
+	*/
 	//--testing
 
 	glfwSetWindowUserPointer(display.getWindow(), &inputhandler);
@@ -84,13 +86,12 @@ int main () {
 	while( !glfwWindowShouldClose( display.getWindow() ) ){
 
 		display.Clear();
-		double time = glfwGetTime();
-		vertexShader.Uniform1f( "ftime", (float) time );
+		//double time = glfwGetTime();
 		program.Use();
-		
-		//
-        glBindVertexArray(VertexArrayID);
-        glDrawArrays(GL_TRIANGLES, 0, 3); // 3 indices starting at 0 -> 1 triangle
+		mesh.Bind();
+        //wavefront.Bind();
+        glDrawElements(GL_TRIANGLES, mesh.GetVertexCount(), GL_UNSIGNED_INT, (void*)0);
+        //glDrawArrays(GL_TRIANGLES, 0, 6); 
 
 		display.Update();
 	}

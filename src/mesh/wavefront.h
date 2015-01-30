@@ -10,6 +10,8 @@
 class Wavefront{
 public:
 	Wavefront(std::string filename);
+	void Bind();
+	int GetVertexCount();
 	virtual ~Wavefront();
 protected:
 	std::string m_path;

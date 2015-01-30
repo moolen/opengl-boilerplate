@@ -18,6 +18,8 @@ pkg_search_module(GLFW REQUIRED glfw3)
 file(GLOB_RECURSE SOURCE_FILE_HEADERS src/*.h)
 file(GLOB_RECURSE SOURCE_FILE_IMPLEMENTATIONS src/*.cpp src/*.cc)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 include_directories(
 	${OPENGL_INCLUDE_DIRS}
 	${GLM_ROOT_DIR}
