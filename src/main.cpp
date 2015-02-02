@@ -8,6 +8,7 @@
 #include <GL/glut.h>
 #include <GL/glut.h>
 #include "glm/glm.hpp"
+#include <glm/ext.hpp>
 #include "glm/gtc/matrix_transform.hpp"
 
 #include <string>
@@ -25,6 +26,9 @@
 #include "shader/shader.h"
 #include "shader/shader_program.h"
 #include "mesh/mesh_model.h"
+#include "mesh/texture.h"
+#include "game/light.h"
+#include "game/camera.h"
 
 static const int DISPLAY_WIDTH = 800;
 static const int DISPLAY_HEIGHT = 600;
@@ -39,9 +43,11 @@ static void keyCallback(GLFWwindow* window, int key, int scancode, int action, i
 int main () {
 
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_NAME);
-	Wavefront mesh("monkey.obj");
+	Wavefront mesh("monkey-uv.obj");
+	Texture texture("bricks.jpg");
 	Inputhandler inputhandler(&display);
 	double gametime = glfwGetTime();
+
 	Shader fragmentShader("shader.fragment", GL_FRAGMENT_SHADER);
 	Shader vertexShader("shader.vertex", GL_VERTEX_SHADER);
 	ShaderProgram program;
@@ -49,67 +55,53 @@ int main () {
 	program.Attach(vertexShader.GetId());
 	program.Link();
 
-	program.AddUniform("in_Time");
+	//program.AddUniform("in_Time");
 	program.AddUniform("modelMatrix");
 	program.AddUniform("projectionMatrix");
 	program.AddUniform("viewMatrix");
+	program.AddUniform("lightPosition");
+	program.AddUniform("lightColor");
 
-	glm::mat4 viewMatrix = glm::lookAt(
-		glm::vec3(0, 0, 3),
-		glm::vec3(0, 0, -5),
-		glm::vec3(0, 1, 0)
+	Light light(
+		glm::vec3(0, 0, 5), // position
+		glm::vec3(1, 1, 1) // color
 	);
 
-	glm::mat4 projectionMatrix = glm::perspective(
+	Camera camera(
+		glm::vec3(0, 0, 3),
 		65.0f,
 		(float) DISPLAY_WIDTH / DISPLAY_HEIGHT,
 		1.0f,
 		100.0f
 	);
 
-	glm::mat4 modelMatrix = glm::rotate(glm::mat4(1.0f), (float) gametime, glm::vec3(0.0f, 1.0f, 0.0f));
+	 glm::mat4 projectionMatrix = glm::perspective(
+            65.0f,
+            (float) DISPLAY_WIDTH / DISPLAY_HEIGHT,
+            1.0f,
+            100.0f
+    );
 
-	//--testing
-	/*
-        std::vector<float> vertexData;
-        std::vector<GLuint> indexData;
+	glm::mat4 viewMatrix = glm::lookAt(
+        glm::vec3(0, 0, 3),
+        glm::vec3(0, 0, -5),
+        glm::vec3(0, 1, 0)
+    );
 
-	    vertexData.push_back(-0.5f);
-	    vertexData.push_back(0.5f);
-	    vertexData.push_back(0.0f);
-
-	    vertexData.push_back(-0.5f);
-	    vertexData.push_back(-0.5f);
-	    vertexData.push_back(0.0f);
-
-	    vertexData.push_back(0.5f);
-	    vertexData.push_back(-0.5f);
-	    vertexData.push_back(0.0f);
-
-	    vertexData.push_back(0.5f);
-	    vertexData.push_back(0.5f);
-	    vertexData.push_back(0.0f);
-
-	    indexData.push_back(0);
-	    indexData.push_back(1);
-	    indexData.push_back(3);
-	    indexData.push_back(3);
-	    indexData.push_back(1);
-	    indexData.push_back(2);
-
-
-
-        MeshModel mesh(vertexData, indexData);
-	*/
-	//--testing
 	glfwSetWindowUserPointer(display.getWindow(), &inputhandler);
 	glfwSetKeyCallback( display.getWindow(), keyCallback );
 
 	while( !glfwWindowShouldClose( display.getWindow() ) ){
 
 		display.Clear();
+
 		gametime = glfwGetTime();
-		glm::mat4 modelMatrix = glm::rotate(glm::mat4(1.0f), (float) gametime, glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 modelMatrix = glm::mat4(1.0f);
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(0, 0, 0.5));
+		modelMatrix = glm::rotate(modelMatrix, (float) gametime, glm::vec3(0, 1, 0));
+
+		camera.MoveLeft(0.01f);
+		camera.Update();
 
 		glUniform1f(
 			program.GetUniformLocation("in_Time"), (float) gametime
@@ -126,18 +118,34 @@ int main () {
 			program.GetUniformLocation("projectionMatrix"),
 			1,
 			GL_FALSE,
-			&projectionMatrix[0][0]
+			camera.GetProjectionPtr()
 		);
 
 		glUniformMatrix4fv(
 			program.GetUniformLocation("viewMatrix"),
 			1,
 			GL_FALSE,
-			&viewMatrix[0][0]
+			//&viewMatrix[0][0]
+			&camera.GetView()[0][0]
 		);
+
+		glUniform3fv(
+			program.GetUniformLocation("lightPosition"),
+			1,
+			light.GetPosition()
+		);
+
+		glUniform3fv(
+			program.GetUniformLocation("lightColor"),
+			1,
+			light.GetColor()
+		);
+
+		glActiveTexture(GL_TEXTURE0);
 
 
 		program.Use();
+		texture.Bind();
 		mesh.Bind();
         glDrawElements(GL_TRIANGLES, mesh.GetVertexCount(), GL_UNSIGNED_INT, (void*)0);
 

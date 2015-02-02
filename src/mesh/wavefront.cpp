@@ -26,12 +26,50 @@ Wavefront::Wavefront(std::string filename):
 		exit(1);
 	}
 
-	std::cout << "shape count: " << shapes.size();
+	std::cout << "shape count: " << shapes.size() << std::endl;;
 
-	m_model.AddPositions(shapes[0].mesh.positions);
-	m_model.AddIndices(shapes[0].mesh.indices);
-	m_model.AddNormals(shapes[0].mesh.normals);
+	std::vector<GLfloat> positions;
+	std::vector<GLuint> indices;
+	std::vector<GLfloat> normals;
+	std::vector<GLfloat> texcoords;
 
+	for (size_t i = 0; i < shapes.size(); i++) {
+	  
+		printf("normals: %i \n", shapes[i].mesh.normals.size());
+		printf("texcoords: %i \n", shapes[i].mesh.texcoords.size());
+		printf("positions: %i \n", shapes[i].mesh.positions.size());
+		printf("indices: %i \n", shapes[i].mesh.indices.size());
+
+		indices.insert(
+			indices.end(),
+			shapes[i].mesh.indices.begin(),
+			shapes[i].mesh.indices.end()
+		);
+
+	  	positions.insert(
+	  		positions.end(),
+	  		shapes[i].mesh.positions.begin(),
+	  		shapes[i].mesh.positions.end()
+	  	);
+
+  		normals.insert(
+	  		normals.end(),
+	  		shapes[i].mesh.normals.begin(),
+	  		shapes[i].mesh.normals.end()
+	  	);
+
+	  	texcoords.insert(
+	  		texcoords.end(),
+	  		shapes[i].mesh.texcoords.begin(),
+	  		shapes[i].mesh.texcoords.end()
+	  	);
+
+	}
+
+	m_model.AddPositions( positions );
+	m_model.AddIndices( indices );
+	m_model.AddNormals( normals );
+	m_model.AddTextures( texcoords );
 
 }
 

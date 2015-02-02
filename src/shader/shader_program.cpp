@@ -39,6 +39,7 @@ GLint ShaderProgram::AddUniform(const char* uniform){
 
 	if( location == GL_INVALID_VALUE || location == -1){
 		printf("invalid uniform location for %s\n", uniform);
+		//throw;
 		return GL_INVALID_VALUE;
 	}else{
 		m_uniforms.insert(std::pair<const char*,int>(uniform, location));

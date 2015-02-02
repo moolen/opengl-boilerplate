@@ -167,7 +167,12 @@ void MeshModel::AddNormals(std::vector<GLfloat> normals){
 		CreateVAO();
 	}
 	BindVAO();
-	//StoreInAttributeList()
+	StoreInAttributeList(
+		GL_ARRAY_BUFFER,
+		VERTEX_ARRAY_NORMAL,
+		normals,
+		3
+	);
 	UnbindVAO();
 }
 
@@ -185,7 +190,19 @@ void MeshModel::AddIndices(std::vector<GLuint> indices){
 }
 
 void MeshModel::AddTextures(std::vector<GLfloat> textures){
+	if( !m_vaoID ){
+		std::cout << "adding vao again" << std::endl;
+		CreateVAO();
+	}
+	BindVAO();
 
+	StoreInAttributeList(
+		GL_ARRAY_BUFFER,
+		VERTEX_ARRAY_TEXTURE,
+		textures,
+		2
+	);
+	UnbindVAO();
 }
 
 GLuint MeshModel::GetVAO(){

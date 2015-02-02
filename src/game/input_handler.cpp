@@ -15,6 +15,9 @@ void Inputhandler::HandleKey(int key, int scancode, int action, int mods){
 		glfwSetWindowShouldClose(m_display->getWindow(), 1);
 		return;
 	}
+
+	
+
 }
 
 Inputhandler::~Inputhandler(){

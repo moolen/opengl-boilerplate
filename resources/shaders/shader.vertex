@@ -1,16 +1,35 @@
 #version 300 es
 
 layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 normal;
+layout(location = 2) in vec2 texture;
 
 uniform float in_Time;
 uniform mat4 modelMatrix;
-uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
+uniform vec3 lightPosition;
 
-out float pass_Time;
+out float T;
+out vec2 texCoord;
+out vec3 N;
+out vec3 L;
+out vec3 P;
+out vec3 V;
 
 void main(){
 	
+	vec4 P = viewMatrix * modelMatrix * vec4(position, 1.0);
+
+	// NORMAL
+	N = mat3(viewMatrix * modelMatrix) * normal;
+	//N = normalize(N);
+
+    L = normalize(lightPosition - P.xyz);
+    T = in_Time;
+    V = normalize(-(P.xyz / P.w));
+    texCoord = texture;
+
+    // finally set position of vertex
     gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
-    pass_Time = in_Time;
 }

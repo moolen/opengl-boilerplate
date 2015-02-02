@@ -47,6 +47,15 @@ public:
 	void AddIndices(std::vector<GLuint> indices);
 	void AddTextures(std::vector<GLfloat> textures);
 
+	std::vector<GLfloat> CalculateNormals(
+		std::vector<GLfloat> positions,
+		std::vector<GLuint> indices
+	);
+
+	// std::vector<GLfloat> CalculateNormals(
+	// 	std::vector<GLfloat> positions
+	// );
+
 	// (un)bind VAO
 	void Bind();
 	void Unbind();

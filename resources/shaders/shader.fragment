@@ -1,12 +1,38 @@
 #version 300 es
 
-in highp float pass_Time;
-out highp vec3 color;
+in highp float T;
+in highp vec3 N;
+in highp vec3 L;
+in highp vec3 V;
+in highp vec2 texCoord;
+
+out highp vec4 out_Color;
+
+uniform highp vec3 lightColor;
+uniform sampler2D sampler;
+
+struct Lightsource
+{
+	highp vec3 diffuse;
+	highp vec3 ambient;
+	highp vec3 specular;
+};
+struct Material
+{
+	highp vec4 diffuse;	
+	highp vec4 ambient;	
+	highp vec4 specular;
+	highp vec4 emissive;
+	highp float shininess;
+};
 
 void main(){
-    color = vec3(
-    	sin(cos(pass_Time) + pass_Time),
-    	cos(pass_Time),
-    	sin(pass_Time)
-    );
+
+	highp vec3 R = reflect(-L, N);
+
+	highp vec4 diffuse = max(dot(N, L), 0.0) * vec4(lightColor, 1.0);
+	highp vec4 specular = pow(max(dot(R, V), 0.0), 12.8f) * vec4(0.32f, 0.32f, 0.32f, 1.0f);
+	highp vec4 ambient = vec4(0.14f, 0.22f, 0.16f, 1.0f) * vec4(0.0, 1.0, 0.0, 1.0);
+	
+	out_Color = texture2D(sampler, texCoord) * diffuse + specular + ambient;
 }

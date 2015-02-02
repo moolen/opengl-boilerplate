@@ -2,6 +2,7 @@
 #define TEST_GAME_H
 
 #include "scene.h"
+#include "camera.h"
 
 class Game{
 	public:
@@ -9,6 +10,7 @@ class Game{
 		virtual ~Game();
 	private:
 		Scene m_scene;
+		Camera m_camera;
 };
 
 #endif
