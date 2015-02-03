@@ -148,6 +148,17 @@ MeshModel::MeshModel(
 
 }
 
+void MeshModel::AddLinePositions(std::vector<GLfloat> positions){
+	SetVertexCount(positions.size() / 3);
+	if(!m_vaoID){
+		CreateVAO();
+	}
+
+	BindVAO();
+	StoreInAttributeList(GL_ARRAY_BUFFER, VERTEX_ARRAY_POSITION, positions, 3);
+
+	UnbindVAO();
+}
 
 void MeshModel::AddPositions(std::vector<GLfloat> positions){
 	
@@ -238,7 +249,7 @@ GLuint MeshModel::StoreInAttributeList(
     );
     
     glVertexAttribPointer(
-            attributeListPosition,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+            attributeListPosition,
             size,               // size
             GL_FLOAT,           // type
             GL_FALSE,           // normalized?

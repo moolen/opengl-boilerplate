@@ -6,6 +6,12 @@
 /**
  * constructor
  */
+
+Light::Light():
+m_position(glm::vec3(0, 0, 0)),
+m_color(glm::vec3(0, 1, 0))
+{}
+
 Light::Light(glm::vec3 position, glm::vec3 color):
 	m_position(position),
 	m_color(color)

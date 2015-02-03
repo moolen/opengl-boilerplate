@@ -11,6 +11,7 @@ class Texture{
 public:
 	Texture(const std::string filename);
 	void Bind();
+	void Unbind();
 	virtual ~Texture();
 
 protected:

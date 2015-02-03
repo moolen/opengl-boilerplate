@@ -33,6 +33,11 @@ public:
 
 protected:
 
+	const double MOVE_SPEED = 0.3f;
+	const double ROTATE_SPEED = 0.03f;
+	const double PITCH_SPEED = 0.03f;
+	const double INVERT_Y_AXIS_MULTIPLIER = -1;
+
 	glm::mat4 m_projection;
 	glm::mat4 m_view;
 

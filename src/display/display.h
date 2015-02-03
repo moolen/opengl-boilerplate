@@ -13,6 +13,7 @@ public:
 	void Clear(float r = 0.0, float g = 0.15, float b = 0.3, float a = 1.0);
 	int getKey();
 	GLFWwindow* getWindow();
+	float getAspectRatio();
 	int getWidth();
 	int getHeight();
 	virtual ~Display();

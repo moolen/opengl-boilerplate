@@ -26,7 +26,7 @@ Wavefront::Wavefront(std::string filename):
 		exit(1);
 	}
 
-	std::cout << "shape count: " << shapes.size() << std::endl;;
+	//std::cout << "shape count: " << shapes.size() << std::endl;;
 
 	std::vector<GLfloat> positions;
 	std::vector<GLuint> indices;
@@ -35,10 +35,10 @@ Wavefront::Wavefront(std::string filename):
 
 	for (size_t i = 0; i < shapes.size(); i++) {
 	  
-		printf("normals: %i \n", shapes[i].mesh.normals.size());
-		printf("texcoords: %i \n", shapes[i].mesh.texcoords.size());
-		printf("positions: %i \n", shapes[i].mesh.positions.size());
-		printf("indices: %i \n", shapes[i].mesh.indices.size());
+		// printf("normals: %i \n", shapes[i].mesh.normals.size());
+		// printf("texcoords: %i \n", shapes[i].mesh.texcoords.size());
+		// printf("positions: %i \n", shapes[i].mesh.positions.size());
+		// printf("indices: %i \n", shapes[i].mesh.indices.size());
 
 		indices.insert(
 			indices.end(),
@@ -75,6 +75,10 @@ Wavefront::Wavefront(std::string filename):
 
 int Wavefront::GetVertexCount(){
 	return m_model.GetVertexCount();
+}
+
+MeshModel Wavefront::GetModel(){
+	return m_model;
 }
 
 void Wavefront::Bind(){

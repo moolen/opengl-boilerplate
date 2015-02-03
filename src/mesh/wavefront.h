@@ -12,6 +12,7 @@ public:
 	Wavefront(std::string filename);
 	void Bind();
 	int GetVertexCount();
+	MeshModel GetModel();
 	virtual ~Wavefront();
 protected:
 	std::string m_path;

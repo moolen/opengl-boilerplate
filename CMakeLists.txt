@@ -19,6 +19,7 @@ file(GLOB_RECURSE SOURCE_FILE_HEADERS src/*.h)
 file(GLOB_RECURSE SOURCE_FILE_IMPLEMENTATIONS src/*.cpp src/*.cc)
 
 set(CMAKE_BUILD_TYPE Debug)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(
 	${OPENGL_INCLUDE_DIRS}

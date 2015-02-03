@@ -14,6 +14,7 @@ public:
 	void Link();
 	void Use();
 
+	GLuint GetId();
 	GLint AddUniform(const char* uniform);
 	GLint GetUniformLocation(const char* uniform);
 

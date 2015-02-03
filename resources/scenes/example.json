@@ -1,3 +1,22 @@
 {
-	"name": "foo"
+	"name": "foo",
+	
+	"lights": [
+		{
+			"position": [0, 0, 5],
+			"color": [1, 0, 0]
+		}
+	],
+	"entities": [
+		{
+			"position": [0, 0, -3],
+			"meshType": "wavefront",
+			"mesh": "cross.obj",
+			"texture": "bricks.jpg",
+			"shader": {
+				"vertex": "shader.vertex",
+				"fragment": "shader.fragment"
+			}
+		}
+	]
 }

@@ -9,6 +9,7 @@
 class Light{
 
 public:
+	Light();
 	Light(glm::vec3 position, glm::vec3 color);
 
 	void SetPosition(glm::vec3 position);

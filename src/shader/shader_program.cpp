@@ -32,6 +32,10 @@ void ShaderProgram::Use(){
 	glUseProgram(m_program);
 }
 
+GLuint ShaderProgram::GetId(){
+	return m_program;
+}
+
 GLint ShaderProgram::AddUniform(const char* uniform){
 	GLint location = glGetUniformLocation(m_program, (const GLchar *) uniform);
 
@@ -42,7 +46,13 @@ GLint ShaderProgram::AddUniform(const char* uniform){
 		//throw;
 		return GL_INVALID_VALUE;
 	}else{
-		m_uniforms.insert(std::pair<const char*,int>(uniform, location));
+		if( m_uniforms.find(uniform) == m_uniforms.end() ){
+			m_uniforms.insert(std::pair<const char*,int>(uniform, location));
+		}
+		else{
+			std::cout << "uniform already inserted: " << uniform << std::endl;
+		}
+	
 		return location;
 	}
 }

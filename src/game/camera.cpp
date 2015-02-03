@@ -18,7 +18,7 @@ Camera::Camera(
 	m_forward = glm::vec3(
 		0.0f,
 		0.0f,
-		-8.0f
+		-100.0f
 	);
 
 	m_up = glm::vec3(
@@ -68,33 +68,44 @@ float* Camera::GetViewPtr(){
 
 void Camera::MoveForward(float amount){
 	m_pos += m_forward * amount;
+	Update();
 }
 
 void Camera::MoveBackward(float amount){
 	m_pos -= m_forward * amount;
+	Update();
 }
 
 void Camera::MoveLeft(float amount){
 	m_pos += glm::cross(m_up, m_forward) * amount;
+	Update();
 }
 
 void Camera::MoveRight(float amount){
 	m_pos -= glm::cross(m_up, m_forward) * amount;
+	Update();
 }
 
-void Camera::Pitch(float angle){
+void Camera::Pitch(float angle)
+{
+	angle = angle * INVERT_Y_AXIS_MULTIPLIER * PITCH_SPEED;
 	glm::vec3 right = glm::normalize(glm::cross(m_up, m_forward));
 
-	//m_forward = glm::vec3(glm::normalize(glm::rotate(angle, right) * glm::vec4(m_forward, 0.0)));
-	//m_up = glm::normalize(glm::cross(m_forward, right));
+	m_forward = glm::vec3(glm::normalize(glm::rotate(angle, right) * glm::vec4(m_forward, 0.0)));
+	m_up = glm::normalize(glm::cross(m_forward, right));
+	Update();
 }
-void Camera::Rotate(float angle){
+
+void Camera::Rotate(float angle)
+{
+	angle = angle * ROTATE_SPEED;
 	static const glm::vec3 UP(0.0f, 1.0f, 0.0f);
 
-	//glm::mat4 rotation = glm::rotate(angle, UP);
+	glm::mat4 rotation = glm::rotate(angle, UP);
 
-	//m_forward = glm::vec3(glm::normalize(rotation * glm::vec4(m_forward, 0.0)));
-	//m_up = glm::vec3(glm::normalize(rotation * glm::vec4(m_up, 0.0)));
+	m_forward = glm::vec3(glm::normalize(rotation * glm::vec4(m_forward, 0.0)));
+	m_up = glm::vec3(glm::normalize(rotation * glm::vec4(m_up, 0.0)));
+	Update();
 }
 
 glm::vec3 Camera::GetForward(){

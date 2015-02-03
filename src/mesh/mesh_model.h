@@ -43,6 +43,7 @@ public:
 
 	// setter for pos, norm, indices, tex
 	void AddPositions(std::vector<GLfloat> positions);
+	void AddLinePositions(std::vector<GLfloat> positions);
 	void AddNormals(std::vector<GLfloat> normals);
 	void AddIndices(std::vector<GLuint> indices);
 	void AddTextures(std::vector<GLfloat> textures);
